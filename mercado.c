@@ -131,5 +131,53 @@ void visualizarCarrinho(){
 }
 
 Produto pegarProdutoPorCodigo(int codigo){
-
+    Produto p;
+    for (int i = 0; i < contador_produto; i++){
+        if(produtos[i].codigo == codigo){
+            p = produtos[i];
+        }
+    }
+    return p;
 }
+
+int * temNoCarrinho(int codigo){
+    int static retorno[] = {0, 0};
+    for (int i = 0; i < contador_carrinho; i++){
+        if(carrinho[i].produto.codigo == codigo){
+            retorno[0] = 1; //Tem produto com esse código
+            retorno[1] = i; //Indice do produto no carrinho
+        }
+    }
+    return retorno;
+}
+
+void fecharPedido(){
+    if(contador_carrinho > 0){
+        float valorTotal= 0.0;
+        printf("Produtos do carrinho: \n");
+        printf("================================\n");
+        for(int i = 0; i < contador_carrinho; i++){
+            Produto p = carrinho[i].produto;
+            int quantidade = carrinho[i].quantidade;
+            valorTotal += p.preco * quantidade;
+            infoProduto(p);
+            printf("Quantidade %d: \n", quantidade);
+            printf("================================\n");
+            Sleep(1);
+        }
+        printf("Fatura: R$%.2f\n", valorTotal);
+
+        //limpar carrinho
+        contador_carrinho = 0;
+        printf("Obrigado pela preferencia!\n");
+        printf("================================\n");
+        Sleep(2);
+        menu();
+    }
+    else{
+        printf("Você não tem produtos no carrinho ainda!\n");
+        Sleep(3);
+        menu();
+    }
+}
+
